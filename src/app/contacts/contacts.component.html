@@ -2,7 +2,6 @@
 
 <div class="container">
     <div class="row">
-
         <div class="col-md-5">
             <div class="col-md-7">
                 <cms-contact-detail *ngIf="selectedContact; else infoText" [contact]="selectedContact">
@@ -11,8 +10,7 @@
                     <p>Please select a Contact!</p>
                 </ng-template>
             </div>
-            <app-contact-list (contactWasSelected)="selectedContact = $event"></app-contact-list>
+            <app-contact-list></app-contact-list>
         </div>
     </div>
-
 </div>

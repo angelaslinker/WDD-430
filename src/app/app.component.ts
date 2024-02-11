@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'cms-root',
+  selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'cms';
-  selectedFeature = 'documents';
+  selectedFeature: string;
+
   switchView(selectedFeature: string) {
-    this.selectedFeature = selectedFeature;
+    if (this.selectedFeature?.toUpperCase() !== selectedFeature.toUpperCase()) {
+      this.selectedFeature = selectedFeature;
+    }
   }
-
 }
-
