@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ContactService } from './contact.service';
+import { WindRefService } from './wind-ref.service';
 
-describe('ContactService', () => {
-  let service: ContactService;
+describe('WindRefService', () => {
+  let service: WindRefService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ContactService);
+    service = TestBed.inject(WindRefService);
   });
 
   it('should be created', () => {

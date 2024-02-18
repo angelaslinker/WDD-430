@@ -1,29 +1,33 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Contacts } from './contact.model';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContactService {
-  contactSelectedEvent = new EventEmitter<Contacts>();
-  contacts: Contacts[] = [];
+  contactSelectedEvent = new EventEmitter<Contact>();
+  contactChangedEvent = new EventEmitter<Contact[]>();
+
+  private contacts: Contact[] = [];
 
   constructor() {
     this.contacts = MOCKCONTACTS;
   }
 
-  getContacts(): Contacts[] {
+  getContacts(): Contact[] {
     return this.contacts.slice();
   }
 
-  getContact(id: string): Contacts {
-    for (const contact of this.contacts) {
-      if (contact.id === id) {
-        return contact;
-      }
-    }
-    return null;
+  getContact(id: string): Contact {
+    return this.contacts.find((c) => c.id === id);
   }
 
+  deleteContact(contact: Contact) {
+    if (!contact) return;
+    const pos = this.contacts.indexOf(contact);
+    if (pos < 0) return;
+    this.contacts.splice(pos, 1);
+    this.contactChangedEvent.emit(this.contacts.slice());
+  }
 }
