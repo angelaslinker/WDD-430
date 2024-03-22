@@ -1,29 +1,37 @@
-// Get dependencies
 var express = require('express');
 var path = require('path');
 var http = require('http');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var router = express.Router();
+var mongoose = require('mongoose');
+require('dotenv').config();
+const { MongoClient } = require('mongodb');
+const uri = process.env.MONGODB_URL;
+const client = new MongoClient(uri);
 
-const index = require('./server/routes/app');
-const messageRoutes = require("./server/routes/messages");
-const contactRoutes = require("./server/routes/contacts");
-const documentRoutes = require("./server/routes/documents");
+
+// import the routing file to handle the default (index) route
+var index = require('./server/routes/app');
+
+const messageRoutes = require('./server/routes/messages');
+const documentsRoutes = require('./server/routes/documents');
+const contactRoutes = require('./server/routes/contacts');
+
+
+
+mongoose.connect(uri)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });
+
+
+
 
 var app = express(); // create an instance of express
-
-// tell express to map the default route ("/") to the index route
-app.use("/", index);
-
-// Tell express to map all other non-defined routes back to the index page
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  res.render("index");
-});
-
-
 
 // Tell express to use the following parsers for POST data
 app.use(bodyParser.json());
@@ -52,14 +60,14 @@ app.use((req, res, next) => {
 // root directory for your web site
 app.use(express.static(path.join(__dirname, 'dist/cms')));
 
-// // Tell express to map the default route ('/') to the index route
-// app.use('/', index);
+// Tell express to map the default route ('/') to the index route
+app.use('/', index);
+app.use('/messages', messageRoutes);
+app.use('/documents', documentsRoutes);
+app.use('/contacts', contactRoutes);
 
-// routes
-app.use("/", index);
-app.use("/messages", messageRoutes);
-app.use("/contacts", contactRoutes);
-app.use("/documents", documentRoutes);
+// ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
+
 // Tell express to map all other non-defined routes back to the index page
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/cms/index.html'));

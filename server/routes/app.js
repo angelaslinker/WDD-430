@@ -1,20 +1,12 @@
-// var express = require("express");
-// var router = express.Router();
-// router.get('/', function (req, res, next) {
-//   res.render('index', { title: "CMS" });
-// });
-// module.exports = router;
-
 var express = require('express');
+var path = require('path');
 var router = express.Router();
-const path = require('path'); // Import the path module
-
-// Serve static files from the 'dist/cms/browser' directory
-router.use(express.static(path.join(__dirname, '../..', 'dist/cms/browser')));
+require('dotenv').config();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.sendFile('index.html', { root: path.join(__dirname, '../..', 'dist/cms/browser/') });
+  console.log('Root route accessed');
+  res.sendFile(path.join(__dirname, '../../../src/index.html'));
 });
 
 module.exports = router;

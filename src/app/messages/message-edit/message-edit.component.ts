@@ -18,14 +18,14 @@ export class MessageEditComponent implements OnInit {
   @ViewChild('subject') subject: ElementRef;
   @ViewChild('msgText') msgText: ElementRef;
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSendMessage() {
     const subject = this.subject.nativeElement.value;
     const msgText = this.msgText.nativeElement.value;
-    const message = new Message('1', subject, msgText, '5');
+    const message = new Message('1', subject, msgText);
     this.messageService.addMessage(message);
   }
 
